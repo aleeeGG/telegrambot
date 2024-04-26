@@ -33,8 +33,7 @@ async def next_handler(callback_query: CallbackQuery, state: FSMContext):
 
 @router.message(Anketa.name)
 async def set_name_by_anketa_hander(msg: Message, state: FSMContext):
-    await state.update_data(name=str(msg.text))
-    await msg.answer('Вы неверно ввели имя!')
+    await state.update_data(name=msg.text)
     await state.set_state(Anketa.age)
     markup = InlineKeyboardMarkup(inline_keyboard=[[
         InlineKeyboardButton(text='Назад', callback_data='back_anketa'),
