@@ -17,6 +17,13 @@ class Anketa(StatesGroup):
     gender = State()
     age = State()
 
+@router.callback_query(F.data == "male_gender")
+async def anketa_handler(callback_query: CallbackQuery, state: FSMContext):
+    await state.set_state(Anketa.gender)
+    markup = InlineKeyboardButton(text = 'Женский', callback_data = 'male')
+
+# @router.message(Command("female_gender"))
+
 @router.message(Command("anketa"))
 async def anketa_handler(msg: Message, state: FSMContext):
     await state.set_state(Anketa.name)
@@ -36,7 +43,7 @@ async def set_name_by_anketa_hander(msg: Message, state: FSMContext):
     await state.set_state(Anketa.age)
     markup = InlineKeyboardMarkup(inline_keyboard=[[
         InlineKeyboardButton(text='Назад', callback_data='set_name_anketa'),
-        InlineKeyboardButton(text='Отмена', callback_data='cencel_anketa')]])
+        InlineKeyboardButton(text='Отмена', callback_data='cancel_anketa')]])
     await msg.answer("Введите ваш возраст", reply_markup=markup)
 
 @router.callback_query(F.data == 'set_name_anketa')
@@ -59,7 +66,9 @@ async def set_name_by_anketa_hander(msg: Message, state: FSMContext):
     await state.set_state(Anketa.gender)
     markup = InlineKeyboardMarkup(inline_keyboard=[[
         InlineKeyboardButton(text='Назад', callback_data='set_age_anketa'),
-        InlineKeyboardButton(text='Отмена', callback_data='cencel_anketa')]])
+        InlineKeyboardButton(text='Отмена', callback_data='cancel_anketa')],
+        [InlineKeyboardButton(text='мужской', callback_data='male'),
+        InlineKeyboardButton(text='женский', callback_data='female')]])
     await msg.answer('Введите Ваш пол', reply_markup=markup)
 
 @router.callback_query(F.data == 'set_name_anketa')
