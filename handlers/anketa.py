@@ -1,18 +1,17 @@
+
 from aiogram import Router, F
 from aiogram.types import Message, BotCommand, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from states.anketa import Anketa
-import keyboards.anketa as kb_anketa
+from keyboards.anketa import cancel_kb, cancel_back_kb, cancel_back_gender_kb #Про это спросить было import keyboards.anketa as kb_anketa
 
 router = Router()
 
 @router.message(Command("anketa"))
 async def anketa_handler(msg: Message, state: FSMContext):
     await state.set_state(Anketa.name)
-    cancel_kb = InlineKeyboardMarkup(inline_keyboard=[[
-        InlineKeyboardButton(text = 'Отмена', callback_data='cancel_anketa')]])
     await msg.answer('Введите Ваше имя', reply_markup=cancel_kb)
 
 @router.callback_query(F.data == 'cancel_anketa')
@@ -60,26 +59,18 @@ async def set_age_by_anketa_handler(msg: Message, state: FSMContext):
 @router.callback_query(F.data == 'set_age_anketa')
 async def set_age_anketa_handler(callback_query: CallbackQuery, state: FSMContext):
     await state.set_state(Anketa.age)
-    markup = InlineKeyboardMarkup(inline_keyboard=[[
-        InlineKeyboardButton(text='Назад', callback_data='back_anketa'),
-        InlineKeyboardButton(text='Отмена', callback_data='cancel_anketa')]])
-    await callback_query.message.answer('Введите Ваш возраст', reply_markup=markup)
+    await callback_query.message.answer('Введите Ваш возраст', reply_markup=cancel_back_kb)
 
 @router.callback_query(F.data == 'back_anketa')
 async def set_age_anketa_handler(callback_query: CallbackQuery, state: FSMContext):
     current_state = await state.get_state()
     if current_state == Anketa.gender:
         await state.set_state(Anketa.age)
-        markup = InlineKeyboardMarkup(inline_keyboard=[[
-            InlineKeyboardButton(text='Назад', callback_data='set_name_anketa'),
-            InlineKeyboardButton(text='Отмена', callback_data='cancel_anketa')]])
-        await callback_query.message.answer('Введите ваш возраст', reply_markup=markup)
+        await callback_query.message.answer('Введите ваш возраст', reply_markup=cancel_back_kb)
 
     elif current_state == Anketa.age:
         await state.set_state(Anketa.name)
-        markup = InlineKeyboardMarkup(inline_keyboard=[[
-            InlineKeyboardButton(text='Отмена', callback_data='cancel_anketa')]])
-        await callback_query.message.answer('Введите вашe имя', reply_markup=markup)
+        await callback_query.message.answer('Введите вашe имя', reply_markup=cancel_kb)
 
 
 @router.message(Anketa.gender)

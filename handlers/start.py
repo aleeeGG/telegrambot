@@ -4,7 +4,7 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from states.anketa import Anketa
-import keyboards.anketa as kb_anketa
+from keyboards.start import back_kb, next_kb #import keyboards.anketa as kb_anketa
 
 router = Router()
 
