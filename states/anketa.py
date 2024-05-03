@@ -4,11 +4,3 @@ class Anketa(StatesGroup):
     name = State()
     age = State()
     gender = State()
-
-
-
-
-
-
-    213123123123123123123123
-    
