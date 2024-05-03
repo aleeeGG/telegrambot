@@ -1,3 +1,4 @@
+'''обработчик бота'''
 import asyncio
 
 from aiogram import Bot, Dispatcher, Router
@@ -8,6 +9,7 @@ dp = Dispatcher()
 router = Router()
 
 async def main():
+    """запуск бота"""
     include_routers(dp)
     await dp.start_polling(bot)
 
