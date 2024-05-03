@@ -8,5 +8,4 @@ def include_routers(dp: Dispatcher):
     """aaaa"""
     dp.include_routers(
         start.router,
-        anketa.router
-    )
+        anketa.router)
