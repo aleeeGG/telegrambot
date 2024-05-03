@@ -5,7 +5,7 @@ from handlers import anketa, start
 
 
 def include_routers(dp: Dispatcher):
-    """aaaa"""
+    """обработчик модулей"""
     dp.include_routers(
         start.router,
         anketa.router)
