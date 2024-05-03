@@ -1,3 +1,4 @@
+"""Обработчик кнопок"""
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 cancel_kb = InlineKeyboardMarkup(inline_keyboard=[[
